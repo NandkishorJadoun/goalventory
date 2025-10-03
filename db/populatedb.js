@@ -25,10 +25,10 @@ CREATE TABLE IF NOT EXISTS players (
 
 INSERT INTO positions (position_name)
 VALUES 
-    ('Forwards'),
-    ('Midfielders'),
-    ('Defenders'),
-    ('Goal keepers');
+    ('Forward'),
+    ('Midfielder'),
+    ('Defender'),
+    ('Goal keeper');
 
 INSERT INTO leagues (league_name)
 VALUES
