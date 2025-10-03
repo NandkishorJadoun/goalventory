@@ -1,1 +1,0 @@
-<div><h1>Users List</h1><% if(users.length>0){ %><ul><% users.forEach(function(user){ if(user.age>20){ %><li><%= user.name %> (<%=user.age%>)</li><% }else{ %><li><%=user.name %> is too young</li><% } %><% }) %></ul><% }else{ %><p>No users found</p><% } %></div>
