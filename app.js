@@ -26,7 +26,8 @@ app.get("/{*splat}", (req, res) => {
 });
 
 app.use((err, req, res, next) => {
-  res.status(500).send(err);
+  console.log(err.message)
+  res.status(500).send("Internal Server Error!");
 });
 
 const PORT = process.env.PORT || 3000;
