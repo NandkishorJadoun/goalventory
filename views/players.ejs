@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Players</title>
+  </head>
+  <body>
+    <%- include("partials/header") %>
+    <main>
+      <h2>All Players</h2>
+      <div>
+        <% if(locals.players && players.length > 0) { %> <%
+        players.forEach(player => { %>
+        <div>
+          <p><%= player.player_name %></p>
+          <p><%= player.category_name %></p>
+          <p><%= player.league_name %></p>
+        </div>
+        <% }) %>
+        <% } %>
+      </div>
+    </main>
+  </body>
+</html>

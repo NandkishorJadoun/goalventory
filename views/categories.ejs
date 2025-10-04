@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Categories</title>
+  </head>
+  <body>
+    <%- include("partials/header") %>
+    <main>
+      <h2>Categories</h2>
+      <div>
+        <% if(locals.categories && categories.length > 0) { %> <%
+        categories.forEach(category => { %>
+        <a href="/categories/<%= category.category_name %>/players">
+          <%=category.category_name %>
+        </a>
+        <% }) %>
+        <% } %>
+      </div>
+    </main>
+  </body>
+</html>

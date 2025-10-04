@@ -2,13 +2,13 @@ const db = require("../db/query");
 
 async function getAllCategories(req, res) {
   const categories = await db.getAllCategories();
-  res.send(categories);
+  res.render("categories", { categories: categories });
 }
 
 async function getPlayersByCategory(req, res) {
   const { categoryName } = req.params;
   const players = await db.getPlayersByCategory(categoryName);
-  res.send(players);
+  res.render("playersByCategory", { players, categoryName });
 }
 
 module.exports = {
