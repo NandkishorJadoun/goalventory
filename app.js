@@ -2,8 +2,10 @@ require("dotenv").config();
 
 const express = require("express");
 const path = require("node:path");
+
 const indexRouter = require("./routes/indexRouter");
 const playersRouter = require("./routes/playersRouter");
+const categoriesRouter = require("./routes/categoriesRouter");
 
 const app = express();
 
@@ -17,9 +19,10 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/", indexRouter);
 app.use("/players", playersRouter);
+app.use("/categories", categoriesRouter);
 
-app.get("/{*splat}", (res, req) => {
-  res.status(404).send("Bla bla bla");
+app.get("/{*splat}", (req, res) => {
+  res.status(404).send("This Page doesn't exist!");
 });
 
 app.use((err, req, res, next) => {

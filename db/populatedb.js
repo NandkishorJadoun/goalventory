@@ -6,9 +6,9 @@ const dbUrl = argv[2];
 console.log(typeof dbUrl, dbUrl)
 
 const SQL = `
-CREATE TABLE IF NOT EXISTS positions (
+CREATE TABLE IF NOT EXISTS categories (
     id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    position_name VARCHAR ( 255 )
+    category_name VARCHAR ( 255 )
 );
 
 CREATE TABLE IF NOT EXISTS leagues (
@@ -19,16 +19,16 @@ CREATE TABLE IF NOT EXISTS leagues (
 CREATE TABLE IF NOT EXISTS players (
     id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     player_name VARCHAR ( 255 ),
-    position_id INTEGER REFERENCES positions(id),
+    category_id INTEGER REFERENCES categories(id),
     league_id INTEGER REFERENCES leagues(id)
 );
 
-INSERT INTO positions (position_name)
+INSERT INTO categories (category_name)
 VALUES 
     ('Forward'),
     ('Midfielder'),
     ('Defender'),
-    ('Goal keeper');
+    ('Goalkeeper');
 
 INSERT INTO leagues (league_name)
 VALUES
@@ -38,7 +38,7 @@ VALUES
     ('Bundesliga'),
     ('Ligue 1');
 
-INSERT INTO players (player_name, position_id, league_id)
+INSERT INTO players (player_name, category_id, league_id)
 VALUES 
     ('Erling Haaland', 1, 1),
     ('Kylian Mbappe', 1, 2),
