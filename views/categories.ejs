@@ -11,12 +11,13 @@
         <% if(locals.categories && categories.length > 0) { %> <%
         categories.forEach(category => { %>
           <div>
-
             <a href="/categories/<%= category.id %>/players">
               <%=category.category_name %>
             </a>
             
-            <a href="">Update</a>
+            <a href="/categories/<%= category.id %>/update">
+              Update
+            </a>
           </div>
         <% }) %>
         <% } %>

@@ -74,6 +74,15 @@ async function getCategoryById(id) {
   return rows[0];
 }
 
+async function updateCategory(...args) {
+  await pool.query(
+    `UPDATE categories
+    SET category_name = ($2)
+    WHERE id = ($1)`,
+    args,
+  );
+}
+
 module.exports = {
   getAllPlayers,
   getPlayerById,
@@ -84,4 +93,5 @@ module.exports = {
   insertNewPlayer,
   insertNewCategory,
   updatePlayer,
+  updateCategory,
 };
