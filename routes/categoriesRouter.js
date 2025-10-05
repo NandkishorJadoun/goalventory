@@ -5,7 +5,7 @@ const categoriesRouter = Router();
 
 categoriesRouter.get("/", categoriesController.getAllCategories);
 categoriesRouter.get(
-  "/:categoryName/players",
+  "/:categoryId/players",
   categoriesController.getPlayersByCategory,
 );
 

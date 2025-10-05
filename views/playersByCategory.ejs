@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= categoryName + " players" %></title>
+    <title><%= category.category_name + " players" %></title>
   </head>
   <body>
     <%- include("partials/header") %>
     <main>
-      <h2><%= categoryName + " players" %></h2>
+      <h2><%= category.category_name + " players" %></h2>
       <div>
         <% if(locals.players && players.length > 0) { %> <%
         players.forEach(player => { %>

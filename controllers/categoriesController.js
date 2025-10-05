@@ -6,9 +6,10 @@ async function getAllCategories(req, res) {
 }
 
 async function getPlayersByCategory(req, res) {
-  const { categoryName } = req.params;
-  const players = await db.getPlayersByCategory(categoryName);
-  res.render("playersByCategory", { players, categoryName });
+  const { categoryId } = req.params;
+  const players = await db.getPlayersByCategory(categoryId);
+  const category = await db.getCategoryById(categoryId);
+  res.render("playersByCategory", { players, category });
 }
 
 async function addCategoryGet(req, res) {

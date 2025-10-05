@@ -20,14 +20,14 @@ async function getAllLeagues() {
   return rows;
 }
 
-async function getPlayersByCategory(categoryName) {
+async function getPlayersByCategory(id) {
   const { rows } = await pool.query(
     `SELECT players.id, player_name, league_name
     FROM players 
     JOIN categories ON players.category_id = categories.id 
     JOIN leagues ON players.league_id = leagues.id
-    WHERE category_name = ($1)`,
-    [categoryName],
+    WHERE categories.id = ($1)`,
+    [id],
   );
 
   return rows;
@@ -65,10 +65,20 @@ async function updatePlayer(...args) {
   );
 }
 
+async function getCategoryById(id) {
+  const { rows } = await pool.query(
+    `SELECT * FROM categories WHERE id = ($1)`,
+    [id],
+  );
+
+  return rows[0];
+}
+
 module.exports = {
   getAllPlayers,
   getPlayerById,
   getAllCategories,
+  getCategoryById,
   getAllLeagues,
   getPlayersByCategory,
   insertNewPlayer,
