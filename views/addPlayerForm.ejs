@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Add Player</title>
+  </head>
+  <body>
+    <%- include("partials/header") %>
+    <main>
+      <h2>Add New Player</h2>
+      <form action="/players/new" method="POST">
+        <p>
+          <label for="playerName">Player Name: </label>
+          <input type="text" name="playerName" id="playerName" />
+        </p>
+        <p>
+          <label for="categoryId">Choose a category:</label>
+          <select name="categoryId" id="categoryId">
+            <% categories.forEach(category => { %>
+            <option value="<%= category.id %>">
+              <%= category.category_name %>
+            </option>
+            <% }) %>
+          </select>
+        </p>
+        <p>
+          <label for="leagueId">League Name:</label>
+          <select name="leagueId" id="leagueId">
+            <% leagues.forEach(league => { %>
+            <option value="<%= league.id %>"><%= league.league_name %></option>
+            <% }) %>
+          </select>
+        </p>
+
+        <p>
+          <button type="button" onclick="window.location.href='/'">Quit</button>
+          <button type="submit">Add Player</button>
+        </p>
+      </form>
+    </main>
+  </body>
+</html>
