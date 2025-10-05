@@ -49,11 +49,29 @@ async function insertNewCategory(categoryName) {
   );
 }
 
+async function getPlayerById(id) {
+  const { rows } = await pool.query(`SELECT * FROM players WHERE id = ($1)`, [
+    id,
+  ]);
+
+  return rows[0];
+}
+
+async function updatePlayer(...args) {
+  await pool.query(
+    `UPDATE players
+    SET player_name = ($2), category_id = ($3), league_id = ($4) WHERE id = ($1)`,
+    args,
+  );
+}
+
 module.exports = {
   getAllPlayers,
+  getPlayerById,
   getAllCategories,
   getAllLeagues,
   getPlayersByCategory,
   insertNewPlayer,
   insertNewCategory,
+  updatePlayer,
 };

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Update Player</title>
+  </head>
+  <body>
+    <%- include("partials/header") %>
+    <main>
+      <h2>Update Player</h2>
+      <form action="/players/<%=player.id%>/update" method="POST">
+        <p>
+          <label for="playerName">Player Name: </label>
+          <input
+            type="text"
+            name="playerName"
+            id="playerName"
+            value="<%=player.player_name%>"
+          />
+        </p>
+        
+        <p>
+          <label for="categoryId">Choose a category:</label>
+          <select name="categoryId" id="categoryId">
+            <% categories.forEach(category => { %>
+            <option value="<%= category.id %>"
+                <%= category.id === player.category_id ? "selected" : null %> >
+              <%= category.category_name %>
+            </option>
+            <% }) %>
+          </select>
+        </p>
+
+        <p>
+          <label for="leagueId">League Name:</label>
+          <select name="leagueId" id="leagueId">
+            <% leagues.forEach(league => { %>
+            <option value="<%= league.id %>"
+                <%= league.id === player.league_id ? "selected" : null %> >
+                <%= league.league_name %>
+            </option>
+            <% }) %>
+          </select>
+        </p>
+
+        <p>
+          <button type="button" onclick="window.location.href='/'">Quit</button>
+          <button type="submit">Update Player</button>
+        </p>
+      </form>
+    </main>
+  </body>
+</html>

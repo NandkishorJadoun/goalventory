@@ -18,8 +18,28 @@ async function addPlayerPost(req, res) {
   res.redirect("/players");
 }
 
+async function updatePlayerGet(req, res) {
+  const { id } = req.params;
+  const categories = await db.getAllCategories();
+  const leagues = await db.getAllLeagues();
+  const player = await db.getPlayerById(id);
+
+  res.render("updatePlayerForm", { player, categories, leagues });
+}
+
+async function updatePlayerPost(req, res) {
+  const { id } = req.params;
+  const { playerName, categoryId, leagueId } = req.body;
+  console.log(id, playerName, categoryId, leagueId);
+
+  await db.updatePlayer(id, playerName, categoryId, leagueId);
+  res.redirect("/players");
+}
+
 module.exports = {
   getAllPlayers,
   addPlayerGet,
   addPlayerPost,
+  updatePlayerGet,
+  updatePlayerPost,
 };

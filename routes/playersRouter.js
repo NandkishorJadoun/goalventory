@@ -6,5 +6,7 @@ const playersRouter = Router();
 playersRouter.get("/", playersController.getAllPlayers);
 playersRouter.get("/new", playersController.addPlayerGet);
 playersRouter.post("/new", playersController.addPlayerPost);
+playersRouter.get("/:id/update", playersController.updatePlayerGet);
+playersRouter.post("/:id/update", playersController.updatePlayerPost);
 
 module.exports = playersRouter;
