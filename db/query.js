@@ -41,10 +41,19 @@ async function insertNewPlayer(playerName, categoryId, leagueId) {
   );
 }
 
+async function insertNewCategory(categoryName) {
+  await pool.query(
+    `INSERT INTO categories (category_name)
+    VALUES ($1)`,
+    [categoryName],
+  );
+}
+
 module.exports = {
   getAllPlayers,
   getAllCategories,
   getAllLeagues,
   getPlayersByCategory,
   insertNewPlayer,
+  insertNewCategory,
 };

@@ -9,4 +9,7 @@ categoriesRouter.get(
   categoriesController.getPlayersByCategory,
 );
 
+categoriesRouter.get("/new", categoriesController.addCategoryGet);
+categoriesRouter.post("/new", categoriesController.addCategoryPost);
+
 module.exports = categoriesRouter;
