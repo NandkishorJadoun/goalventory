@@ -40,8 +40,26 @@ const validateUpdateCategory = [
   }),
 ];
 
+const validateUpdatePlayer = [
+  body("playerName")
+    .trim()
+    .notEmpty()
+    .withMessage("Player Name shouldn't be empty")
+    .isAlpha("en-US", { ignore: " " })
+    .withMessage("Player Name should only contain letters")
+    .isLength({ min: 4, max: 20 })
+    .withMessage("Length should be between 4 and 20 characters"),
+  body("password").custom((value) => {
+    if (value !== process.env.PASSWORD) {
+      throw new Error("Invalid Password!");
+    }
+    return true;
+  }),
+];
+
 module.exports = {
   validateAddCategory,
   validateAddPlayer,
   validateUpdateCategory,
+  validateUpdatePlayer,
 };

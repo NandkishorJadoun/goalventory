@@ -43,10 +43,16 @@
         </p>
 
         <p>
+          <label for="password">Admin Password: </label>
+          <input type="password" name="password" id="password">
+        </p>
+
+        <p>
           <button type="button" onclick="window.location.href='/'">Quit</button>
           <button type="submit">Update Player</button>
         </p>
       </form>
+      <%- include("partials/error") %>
     </main>
   </body>
 </html>

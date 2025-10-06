@@ -1,6 +1,9 @@
 const db = require("../db/query");
 const { validationResult } = require("express-validator");
-const { validateAddPlayer } = require("../middleware/validator");
+const {
+  validateAddPlayer,
+  validateUpdatePlayer,
+} = require("../middleware/validator");
 
 async function getAllPlayers(req, res) {
   const players = await db.getAllPlayers();
@@ -46,13 +49,30 @@ async function updatePlayerGet(req, res) {
   res.render("updatePlayerForm", { player, categories, leagues });
 }
 
-async function updatePlayerPost(req, res) {
-  const { id } = req.params;
-  const { playerName, categoryId, leagueId } = req.body;
+const updatePlayerPost = [
+  validateUpdatePlayer,
+  async (req, res) => {
+    const { id } = req.params;
+    const errors = validationResult(req);
 
-  await db.updatePlayer(id, playerName, categoryId, leagueId);
-  res.redirect("/players");
-}
+    if (!errors.isEmpty()) {
+      const player = await db.getPlayerById(id);
+      const categories = await db.getAllCategories();
+      const leagues = await db.getAllLeagues();
+
+      return res.render("updatePlayerForm", {
+        player,
+        categories,
+        leagues,
+        errors: errors.array(),
+      });
+    }
+
+    const { playerName, categoryId, leagueId } = req.body;
+    await db.updatePlayer(id, playerName, categoryId, leagueId);
+    res.redirect("/players");
+  },
+];
 
 module.exports = {
   getAllPlayers,
