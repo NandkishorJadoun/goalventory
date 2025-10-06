@@ -83,6 +83,10 @@ async function updateCategory(...args) {
   );
 }
 
+async function deletePlayer(id) {
+  await pool.query(`DELETE FROM players WHERE id = ($1)`, [id]);
+}
+
 module.exports = {
   getAllPlayers,
   getPlayerById,
@@ -94,4 +98,5 @@ module.exports = {
   insertNewCategory,
   updatePlayer,
   updateCategory,
+  deletePlayer
 };

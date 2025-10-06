@@ -3,6 +3,7 @@ const { validationResult } = require("express-validator");
 const {
   validateAddPlayer,
   validateUpdatePlayer,
+  validateDeletePlayer,
 } = require("../middleware/validator");
 
 async function getAllPlayers(req, res) {
@@ -60,7 +61,7 @@ const updatePlayerPost = [
       const categories = await db.getAllCategories();
       const leagues = await db.getAllLeagues();
 
-      return res.render("updatePlayerForm", {
+      return res.status(400).render("updatePlayerForm", {
         player,
         categories,
         leagues,
@@ -74,10 +75,32 @@ const updatePlayerPost = [
   },
 ];
 
+async function deletePlayerGet(req, res) {
+  const { id } = req.params;
+  const player = await db.getPlayerById(id);
+  res.render("deletePlayerForm", { player });
+}
+
+const deletePlayerPost = [
+  validateDeletePlayer,
+  async (req, res) => {
+    const { id } = req.params;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const player = await db.getPlayerById(id);
+      return res.status(400).render("deletePlayerForm", { player, errors: errors.array() });
+    }
+    await db.deletePlayer(id);
+    res.redirect("/players");
+  },
+];
+
 module.exports = {
   getAllPlayers,
   addPlayerGet,
   addPlayerPost,
   updatePlayerGet,
   updatePlayerPost,
+  deletePlayerGet,
+  deletePlayerPost,
 };

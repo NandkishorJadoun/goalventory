@@ -57,9 +57,19 @@ const validateUpdatePlayer = [
   }),
 ];
 
+const validateDeletePlayer = [
+  body("password").custom((value) => {
+    if (value !== process.env.PASSWORD) {
+      throw new Error("Invalid Password!");
+    }
+    return true;
+  }),
+];
+
 module.exports = {
   validateAddCategory,
   validateAddPlayer,
   validateUpdateCategory,
   validateUpdatePlayer,
+  validateDeletePlayer
 };
