@@ -1,6 +1,9 @@
 const db = require("../db/query");
 const { validationResult } = require("express-validator");
-const { validateAddCategory } = require("../middleware/validator");
+const {
+  validateAddCategory,
+  validateUpdateCategory,
+} = require("../middleware/validator");
 
 async function getAllCategories(req, res) {
   const categories = await db.getAllCategories();
@@ -41,14 +44,23 @@ async function updateCategoryGet(req, res) {
   res.render("updateCategoryForm", { category });
 }
 
-async function updateCategoryPost(req, res) {
-  const { categoryId } = req.params;
-  const { categoryName } = req.body;
+const updateCategoryPost = [
+  validateUpdateCategory,
+  async (req, res) => {
+    const { categoryName } = req.body;
+    const { categoryId } = req.params;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const category = await db.getCategoryById(categoryId);
+      return res
+        .status(400)
+        .render("updateCategoryForm", { category, errors: errors.array() });
+    }
 
-  await db.updateCategory(categoryId, categoryName);
-
-  res.redirect("/categories");
-}
+    await db.updateCategory(categoryId, categoryName);
+    res.redirect("/categories");
+  },
+];
 
 module.exports = {
   getAllCategories,

@@ -49,7 +49,6 @@ async function updatePlayerGet(req, res) {
 async function updatePlayerPost(req, res) {
   const { id } = req.params;
   const { playerName, categoryId, leagueId } = req.body;
-  console.log(id, playerName, categoryId, leagueId);
 
   await db.updatePlayer(id, playerName, categoryId, leagueId);
   res.redirect("/players");

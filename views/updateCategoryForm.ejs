@@ -7,7 +7,11 @@
     <%- include("partials/header") %>
     <main>
       <h2>Update Category</h2>
-      <form action="/categories/<%=category.id%>/update" method="POST">
+      <form
+        action="/categories/<%=category.id%>/update"
+        method="POST"
+        autocomplete="off"
+      >
         <p>
           <label for="categoryName">Category Name: </label>
           <input
@@ -19,10 +23,16 @@
         </p>
 
         <p>
+          <label for="password">Admin Password: </label>
+          <input type="password" name="password" id="password" />
+        </p>
+
+        <p>
           <button type="button" onclick="window.location.href='/'">Quit</button>
           <button type="submit">Update Category</button>
         </p>
       </form>
+      <%- include("partials/error") %>
     </main>
   </body>
 </html>
