@@ -10,13 +10,18 @@
       <form action="/categories/new" method="POST">
         <p>
           <label for="categoryName">Category Name: </label>
-          <input type="text" name="categoryName" id="categoryName" />
+          <input 
+          type="text" 
+          name="categoryName" 
+          id="categoryName" 
+          value="<%= locals.categoryName ? categoryName : "" %>" />
         </p>
         <p>
           <button type="button" onclick="window.location.href='/'">Quit</button>
           <button type="submit">Add Category</button>
         </p>
       </form>
+      <%- include("partials/error.ejs") %>
     </main>
   </body>
 </html>
