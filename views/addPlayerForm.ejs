@@ -10,7 +10,7 @@
       <form action="/players/new" method="POST">
         <p>
           <label for="playerName">Player Name: </label>
-          <input type="text" name="playerName" id="playerName" />
+          <input type="text" name="playerName" id="playerName" value="<%= locals.playerName ? playerName : '' %>" />
         </p>
         <p>
           <label for="categoryId">Choose a category:</label>
@@ -36,6 +36,7 @@
           <button type="submit">Add Player</button>
         </p>
       </form>
+      <%- include("partials/error.ejs") %>
     </main>
   </body>
 </html>

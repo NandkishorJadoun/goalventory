@@ -1,4 +1,6 @@
 const db = require("../db/query");
+const { validationResult } = require("express-validator");
+const { validateAddPlayer } = require("../middleware/validator");
 
 async function getAllPlayers(req, res) {
   const players = await db.getAllPlayers();
@@ -12,11 +14,28 @@ async function addPlayerGet(req, res) {
   res.render("addPlayerForm", { categories, leagues });
 }
 
-async function addPlayerPost(req, res) {
-  const { playerName, categoryId, leagueId } = req.body;
-  await db.insertNewPlayer(playerName, categoryId, leagueId);
-  res.redirect("/players");
-}
+const addPlayerPost = [
+  validateAddPlayer,
+  async (req, res) => {
+    const errors = validationResult(req);
+    const { playerName, categoryId, leagueId } = req.body;
+
+    if (!errors.isEmpty()) {
+      const categories = await db.getAllCategories();
+      const leagues = await db.getAllLeagues();
+
+      return res.status(400).render("addPlayerForm", {
+        errors: errors.array(),
+        playerName,
+        categories,
+        leagues,
+      });
+    }
+
+    await db.insertNewPlayer(playerName, categoryId, leagueId);
+    res.redirect("/players");
+  },
+];
 
 async function updatePlayerGet(req, res) {
   const { id } = req.params;
