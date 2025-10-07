@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Delete Category</title>
+  </head>
+  <body>
+    <%- include("partials/header") %>
+    <main>
+      <h2>Delete Category</h2>
+      <form action="/categories/<%=category.id%>/delete" method="POST">
+        <p>
+          <label for="categoryName">Category Name: </label>
+          <input
+            type="text"
+            name="categoryName"
+            id="categoryName"
+            value="<%= category.category_name %>"
+            readonly
+          />
+        </p>
+        <p>
+          <label for="password">Admin Password: </label>
+          <input type="password" name="password" id="password" />
+        </p>
+
+        <p>
+          <button type="button" onclick="window.location.href='/players'">
+            Quit
+          </button>
+          <button type="submit">Delete Category</button>
+        </p>
+      </form>
+      <%- include("partials/error.ejs") %>
+    </main>
+  </body>
+</html>

@@ -12,8 +12,24 @@ categoriesRouter.get(
 categoriesRouter.get("/new", categoriesController.addCategoryGet);
 categoriesRouter.post("/new", categoriesController.addCategoryPost);
 
-categoriesRouter.get("/:categoryId/update", categoriesController.updateCategoryGet);
+categoriesRouter.get(
+  "/:categoryId/update",
+  categoriesController.updateCategoryGet,
+);
 
-categoriesRouter.post("/:categoryId/update", categoriesController.updateCategoryPost);
+categoriesRouter.post(
+  "/:categoryId/update",
+  categoriesController.updateCategoryPost,
+);
+
+categoriesRouter.get(
+  "/:categoryId/delete",
+  categoriesController.deleteCategoryGet,
+);
+
+categoriesRouter.post(
+  "/:categoryId/delete",
+  categoriesController.deleteCategoryPost,
+);
 
 module.exports = categoriesRouter;

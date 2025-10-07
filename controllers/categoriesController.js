@@ -3,6 +3,7 @@ const { validationResult } = require("express-validator");
 const {
   validateAddCategory,
   validateUpdateCategory,
+  validateDeleteCategory,
 } = require("../middleware/validator");
 
 async function getAllCategories(req, res) {
@@ -62,6 +63,29 @@ const updateCategoryPost = [
   },
 ];
 
+async function deleteCategoryGet(req, res) {
+  const { categoryId } = req.params;
+  const category = await db.getCategoryById(categoryId);
+  res.render("deleteCategoryForm", { category });
+}
+
+const deleteCategoryPost = [
+  validateDeleteCategory,
+  async (req, res) => {
+    const { categoryId } = req.params;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const category = await db.getCategoryById(categoryId);
+      return res
+        .status(400)
+        .render("deleteCategoryForm", { category, errors: errors.array() });
+    }
+
+    await db.deleteCategory(categoryId);
+    res.redirect("/categories");
+  },
+];
+
 module.exports = {
   getAllCategories,
   getPlayersByCategory,
@@ -69,4 +93,6 @@ module.exports = {
   addCategoryPost,
   updateCategoryGet,
   updateCategoryPost,
+  deleteCategoryGet,
+  deleteCategoryPost,
 };
