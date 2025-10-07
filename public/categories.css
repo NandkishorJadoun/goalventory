@@ -1,0 +1,35 @@
+.category-container{
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.category-container > div{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.category-card{
+    background-color: #556B2F;
+    padding: 2rem;
+    border-radius: 2rem;
+    font-size: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+}
+
+.category-card a{
+    color: #EFF5D2;
+}
+
+.category-card > a{
+    text-decoration: underline;
+}
+
+.category-card p {
+    font-size: 0.9rem;
+}

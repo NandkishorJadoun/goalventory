@@ -1,0 +1,13 @@
+.home-container {
+    gap: 2rem;
+}
+
+.home-container > a{
+    color: #EFF5D2;
+    background-color: #556B2F;
+    padding: 3rem;
+    font-weight: bold;
+    border-radius: 2rem;
+    font-size: 1.25rem;
+}
+
