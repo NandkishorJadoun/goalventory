@@ -2,12 +2,14 @@
 <html>
   <head>
     <title>Add Category</title>
+      <link rel="stylesheet" href="/global.css" />
+      <link rel="stylesheet" href="/addForm.css">
   </head>
   <body>
     <%- include("partials/header") %>
-    <main>
+    <main class="add-form-container">
       <h2>Add New Category</h2>
-      <form action="/categories/new" method="POST">
+      <form class="add-form" action="/categories/new" method="POST">
         <p>
           <label for="categoryName">Category Name: </label>
           <input 

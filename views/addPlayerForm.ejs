@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Add Player</title>
+    <link rel="stylesheet" href="/global.css" />
   </head>
   <body>
     <%- include("partials/header") %>
@@ -10,7 +11,12 @@
       <form action="/players/new" method="POST">
         <p>
           <label for="playerName">Player Name: </label>
-          <input type="text" name="playerName" id="playerName" value="<%= locals.playerName ? playerName : '' %>" />
+          <input
+            type="text"
+            name="playerName"
+            id="playerName"
+            value="<%= locals.playerName ? playerName : '' %>"
+          />
         </p>
         <p>
           <label for="categoryId">Choose a category:</label>

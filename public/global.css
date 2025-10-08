@@ -30,6 +30,10 @@ header {
 nav {
     display: flex;
     gap: 0.75rem;
+
+    a {
+        text-decoration: underline;
+    }
 }
 
 a {
@@ -42,8 +46,50 @@ main {
     justify-content: center;
     align-items: center;
     flex: 1;
+    flex-direction: column;
+    gap: 1rem;
 }
 
-span{
+span {
     color: #EFF5D2;
+}
+
+button {
+    background-color: #556B2F;
+    color: #EFF5D2;
+    border: solid black 1px;
+    padding: 6px 12px;
+    border-radius: 1rem;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    border: solid 2px #556B2F;
+    padding: 1rem;
+}
+
+form>p {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 4px;
+}
+
+form>p:last-of-type {
+    margin-top: 0.5rem;
+    grid-template-columns: 1fr 1fr;
+}
+
+input,
+select {
+    background-color: #EFF5D2;
+    padding: 2px 6px;
+    border: solid #556B2F 1px;
+}
+
+ul {
+    color: red;
 }
