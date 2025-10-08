@@ -2,19 +2,23 @@
 <html>
   <head>
     <title><%= category.category_name + " players" %></title>
+    <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
     <%- include("partials/header") %>
-    <main>
+    <main class="player-container">
       <h2><%= category.category_name + " players" %></h2>
       <div>
         <% if(locals.players && players.length > 0) { %> <%
         players.forEach(player => { %>
-        <div>
+        <div class="player-card">
           <p><%= player.player_name %></p>
           <p><%= player.league_name %></p>
-          <a href="/players/<%=player.id%>/update">Update</a>
-          <a href="/players/<%=player.id%>/delete">Delete</a>
+          <p>
+            <a href="/players/<%=player.id%>/update">Update</a>
+            <span>|</span>
+            <a href="/players/<%=player.id%>/delete">Delete</a>
+          </p>
         </div>
         <% }) %>
         <% } %>
