@@ -1,109 +1,94 @@
 const pool = require("./pool");
 
-async function getAllPlayers() {
-  const { rows } = await pool.query(
-    `SELECT players.id, player_name, category_name, league_name
+const makeFindAll = (tableName) => {
+  return async () => {
+    const { rows } = await pool.query(`SELECT * FROM ${tableName}`);
+    return rows;
+  };
+};
+
+const makeFindById = (tableName) => {
+  return async (id) => {
+    const { rows } = await pool.query(
+      `SELECT * FROM ${tableName} WHERE id = ($1)`,
+      [id],
+    );
+
+    return rows[0];
+  };
+};
+
+const makeInsert = (tableName, columns) => {
+  const jointColumns = columns.join(", ");
+  const placeholders = columns.map((ele, index) => `$${index + 1}`).join(", ");
+
+  return async (...data) => {
+    await pool.query(
+      `INSERT INTO ${tableName} (${jointColumns})
+      VALUES (${placeholders})`,
+      data,
+    );
+  };
+};
+
+const makeUpdate = (tableName, columns) => {
+  const setClause = columns
+    .map((ele, idx) => `${ele} = ($${idx + 2})`)
+    .join(", ");
+
+  return async (...data) => {
+    await pool.query(
+      `UPDATE ${tableName}
+      SET ${setClause}
+      WHERE id = ($1)`,
+      data,
+    );
+  };
+};
+
+const Players = {
+  findAll: async () => {
+    const { rows } = await pool.query(
+      `SELECT players.id, player_name, category_name, league_name
     FROM players 
     JOIN categories ON players.category_id = categories.id 
     JOIN leagues ON players.league_id = leagues.id`,
-  );
-  return rows;
-}
-
-async function getAllCategories() {
-  const { rows } = await pool.query(`SELECT * FROM categories`);
-  return rows;
-}
-
-async function getAllLeagues() {
-  const { rows } = await pool.query(`SELECT * FROM leagues`);
-  return rows;
-}
-
-async function getPlayersByCategory(id) {
-  const { rows } = await pool.query(
-    `SELECT players.id, player_name, league_name
+    );
+    return rows;
+  },
+  findByCategory: async (id) => {
+    const { rows } = await pool.query(
+      `SELECT players.id, player_name, league_name
     FROM players 
     JOIN categories ON players.category_id = categories.id 
     JOIN leagues ON players.league_id = leagues.id
     WHERE categories.id = ($1)`,
-    [id],
-  );
+      [id],
+    );
 
-  return rows;
-}
-
-async function insertNewPlayer(playerName, categoryId, leagueId) {
-  await pool.query(
-    `INSERT INTO players (player_name, category_id, league_id)
-    VALUES (($1), ($2), ($3))`,
-    [playerName, categoryId, leagueId],
-  );
-}
-
-async function insertNewCategory(categoryName) {
-  await pool.query(
-    `INSERT INTO categories (category_name)
-    VALUES ($1)`,
-    [categoryName],
-  );
-}
-
-async function getPlayerById(id) {
-  const { rows } = await pool.query(`SELECT * FROM players WHERE id = ($1)`, [
-    id,
-  ]);
-
-  return rows[0];
-}
-
-async function updatePlayer(...args) {
-  await pool.query(
-    `UPDATE players
-    SET player_name = ($2), category_id = ($3), league_id = ($4) WHERE id = ($1)`,
-    args,
-  );
-}
-
-async function getCategoryById(id) {
-  const { rows } = await pool.query(
-    `SELECT * FROM categories WHERE id = ($1)`,
-    [id],
-  );
-
-  return rows[0];
-}
-
-async function updateCategory(...args) {
-  await pool.query(
-    `UPDATE categories
-    SET category_name = ($2)
-    WHERE id = ($1)`,
-    args,
-  );
-}
-
-async function deletePlayer(id) {
-  await pool.query(`DELETE FROM players WHERE id = ($1)`, [id]);
-}
-
-async function deleteCategory(id) {
-  await pool.query(`DELETE FROM players WHERE category_id = ($1);`, [id]);
-
-  await pool.query(`DELETE FROM categories WHERE id = ($1)`, [id]);
-}
-
-module.exports = {
-  getAllPlayers,
-  getPlayerById,
-  getAllCategories,
-  getCategoryById,
-  getAllLeagues,
-  getPlayersByCategory,
-  insertNewPlayer,
-  insertNewCategory,
-  updatePlayer,
-  updateCategory,
-  deletePlayer,
-  deleteCategory,
+    return rows;
+  },
+  findById: makeFindById("players"),
+  insert: makeInsert("players", ["player_name", "category_id", "league_id"]),
+  update: makeUpdate("players", ["player_name", "category_id", "league_id"]),
+  delete: async (id) => {
+    await pool.query(`DELETE FROM players WHERE id = ($1)`, [id]);
+  },
 };
+
+const Categories = {
+  findAll: makeFindAll("categories"),
+  findById: makeFindById("categories"),
+  insert: makeInsert("categories", ["category_name"]),
+  update: makeUpdate("categories", ["category_name"]),
+  delete: async (id) => {
+    await pool.query(`DELETE FROM players WHERE category_id = ($1);`, [id]);
+    await pool.query(`DELETE FROM categories WHERE id = ($1)`, [id]);
+  },
+};
+
+const Leagues = {
+  findAll: makeFindAll("leagues"),
+};
+
+module.exports = { Categories, Players, Leagues };

@@ -1,4 +1,5 @@
 const db = require("../db/query");
+const { Categories, Players, Leagues } = require("../db/query");
 const { validationResult } = require("express-validator");
 const {
   validateAddPlayer,
@@ -7,13 +8,13 @@ const {
 } = require("../middleware/validator");
 
 async function getAllPlayers(req, res) {
-  const players = await db.getAllPlayers();
+  const players = await Players.findAll();
   res.render("players", { players: players });
 }
 
 async function addPlayerGet(req, res) {
-  const categories = await db.getAllCategories();
-  const leagues = await db.getAllLeagues();
+  const categories = await Categories.findAll();
+  const leagues = await Leagues.findAll();
 
   res.render("addPlayerForm", { categories, leagues });
 }
@@ -25,8 +26,8 @@ const addPlayerPost = [
     const { playerName, categoryId, leagueId } = req.body;
 
     if (!errors.isEmpty()) {
-      const categories = await db.getAllCategories();
-      const leagues = await db.getAllLeagues();
+      const categories = await Categories.findAll();
+      const leagues = await Leagues.findAll();
 
       return res.status(400).render("addPlayerForm", {
         errors: errors.array(),
@@ -36,20 +37,22 @@ const addPlayerPost = [
       });
     }
 
-    await db.insertNewPlayer(playerName, categoryId, leagueId);
+    await Players.insert(playerName, categoryId, leagueId);
     res.redirect("/players");
   },
 ];
 
 async function updatePlayerGet(req, res) {
   const { id } = req.params;
-  const categories = await db.getAllCategories();
-  const leagues = await db.getAllLeagues();
-  const player = await db.getPlayerById(id);
+  const categories = await Categories.findAll();
+  const leagues = await Leagues.findAll();
+  const player = await Players.findById(id);
+
+  console.log(player)
 
   res.render("updatePlayerForm", { player, categories, leagues });
 }
-
+ 
 const updatePlayerPost = [
   validateUpdatePlayer,
   async (req, res) => {
@@ -57,9 +60,9 @@ const updatePlayerPost = [
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      const player = await db.getPlayerById(id);
-      const categories = await db.getAllCategories();
-      const leagues = await db.getAllLeagues();
+      const categories = await Players.findAll();
+      const leagues = await Leagues.findAll();
+      const player = await Categories.findById(id);
 
       return res.status(400).render("updatePlayerForm", {
         player,
@@ -70,14 +73,14 @@ const updatePlayerPost = [
     }
 
     const { playerName, categoryId, leagueId } = req.body;
-    await db.updatePlayer(id, playerName, categoryId, leagueId);
+    await Players.update(id, playerName, categoryId, leagueId);
     res.redirect("/players");
   },
 ];
 
 async function deletePlayerGet(req, res) {
   const { id } = req.params;
-  const player = await db.getPlayerById(id);
+  const player = await Players.findById(id);
   res.render("deletePlayerForm", { player });
 }
 
@@ -87,10 +90,12 @@ const deletePlayerPost = [
     const { id } = req.params;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const player = await db.getPlayerById(id);
-      return res.status(400).render("deletePlayerForm", { player, errors: errors.array() });
+      const player = await Players.findById(id);
+      return res
+        .status(400)
+        .render("deletePlayerForm", { player, errors: errors.array() });
     }
-    await db.deletePlayer(id);
+    await Players.delete(id);
     res.redirect("/players");
   },
 ];
